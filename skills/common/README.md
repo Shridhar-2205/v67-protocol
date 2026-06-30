@@ -13,3 +13,4 @@ Reusable skills for working with V67 protocol messages and the V67Sub subprotoco
 | `v67_validate` | Validates a V67 JSON envelope against the schema and reports PASS/FAIL with details |
 | `v67sub_handshake_gen` | Generates a V67Sub capability negotiation handshake frame as valid JSON |
 | `v67sub_validate` | Validates a V67Sub handshake JSON against the subprotocol schema |
+| `v67sub_negotiate` | Chains v67sub_handshake_gen → v67_message_gen to produce a V67 envelope carrying a handshake |

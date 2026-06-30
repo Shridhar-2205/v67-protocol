@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:codez:v67sub:schema:v1",
+  "title": "V67SubSchema",
+  "description": "JSON Schema for the V67Sub capability negotiation subprotocol.",
+  "$defs": {
+    "Intent": {
+      "enum": ["offer", "accept", "reject"],
+      "type": "string"
+    },
+    "V67SubCapability": {
+      "description": "A single capability being negotiated.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer"
+        }
+      },
+      "required": ["name", "revision"],
+      "type": "object"
+    },
+    "V67SubHandshake": {
+      "description": "A V67Sub negotiation frame.",
+      "properties": {
+        "intent": {
+          "$ref": "#/$defs/Intent"
+        },
+        "capabilities": {
+          "items": {
+            "$ref": "#/$defs/V67SubCapability"
+          },
+          "type": "array"
+        },
+        "token": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "null" }
+          ],
+          "default": null
+        }
+      },
+      "required": ["intent", "capabilities"],
+      "type": "object"
+    }
+  }
+}

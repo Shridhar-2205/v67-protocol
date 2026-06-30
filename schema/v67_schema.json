@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:codez:v67:schema:v1",
+  "version": "0.1.0",
+  "title": "V67Schema",
+  "description": "Combined JSON Schema for V67 protocol models.",
+  "$defs": {
+    "Priority": {
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "critical"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "Encoding": {
+      "enum": [
+        "utf8",
+        "base64",
+        "binary"
+      ],
+      "title": "Encoding",
+      "type": "string"
+    },
+    "Sender": {
+      "description": "Identifies the origin of a V67 message.",
+      "properties": {
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "service": {
+          "title": "Service",
+          "type": "string"
+        },
+        "region": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Region"
+        }
+      },
+      "required": [
+        "node_id",
+        "service"
+      ],
+      "type": "object"
+    },
+    "Recipient": {
+      "description": "Target destination for a V67 message.",
+      "properties": {
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "channel": {
+          "title": "Channel",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "channel"
+      ],
+      "type": "object"
+    },
+    "V67Header": {
+      "description": "Routing and metadata envelope for every V67 message.",
+      "properties": {
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "message_id": {
+          "title": "Message Id",
+          "type": "string"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string",
+          "format": "date-time"
+        },
+        "priority": {
+          "$ref": "#/$defs/Priority"
+        },
+        "sender": {
+          "$ref": "#/$defs/Sender"
+        },
+        "recipient": {
+          "$ref": "#/$defs/Recipient"
+        },
+        "ttl": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ttl"
+        },
+        "correlation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Correlation Id"
+        }
+      },
+      "required": [
+        "version",
+        "message_id",
+        "timestamp",
+        "priority",
+        "sender",
+        "recipient"
+      ],
+      "type": "object"
+    },
+    "V67Message": {
+      "description": "The body/content carried by a V67 envelope.",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/$defs/Encoding"
+        },
+        "body": {
+          "additionalProperties": true,
+          "title": "Body",
+          "type": "object"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tags"
+        }
+      },
+      "required": [
+        "type",
+        "encoding",
+        "body"
+      ],
+      "type": "object"
+    },
+    "V67Envelope": {
+      "description": "A complete V67 protocol unit: header (routing/metadata) + message (content).",
+      "properties": {
+        "header": {
+          "$ref": "#/$defs/V67Header"
+        },
+        "message": {
+          "$ref": "#/$defs/V67Message"
+        }
+      },
+      "required": [
+        "header",
+        "message"
+      ],
+      "type": "object"
+    }
+  }
+}
